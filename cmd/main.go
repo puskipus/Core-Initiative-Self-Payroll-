@@ -13,6 +13,7 @@ func main() {
 	router.POST("/positions", positioncontroller.NewPosition)
 	router.GET("/positions", positioncontroller.FetchPosition)
 	router.GET("/positions/:id", positioncontroller.DetailPosition)
+	router.DELETE("/positions/:id", positioncontroller.DeletePosition)
 
 	router.Run()
 
