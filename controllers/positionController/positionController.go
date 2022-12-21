@@ -58,3 +58,22 @@ func FetchPosition(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"positions": positions})
 }
+
+func DeletePosition(c *gin.Context) {
+	var position []models.Position
+
+	id := c.Param("id")
+
+	if err := models.DB.Delete(&position, id).Error; err != nil {
+		switch err {
+		case gorm.ErrRecordNotFound:
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Data tidak dapat dihapus"})
+			return
+		default:
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "data berhasil dihapus"})
+}
