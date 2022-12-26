@@ -13,7 +13,7 @@ func ConnectDatabase() {
 		panic(err)
 	}
 
-	database.AutoMigrate(&Position{})
+	database.AutoMigrate(&Position{}, &Employee{})
 
 	DB = database
 }
