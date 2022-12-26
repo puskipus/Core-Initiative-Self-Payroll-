@@ -17,6 +17,7 @@ func main() {
 	router.DELETE("/positions/:id", positioncontroller.DeletePosition)
 
 	router.POST("/employee", employeeController.NewEmployee)
+	router.GET("/employee", employeeController.FetchEmployee)
 
 	router.Run()
 
