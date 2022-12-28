@@ -59,3 +59,21 @@ func DeleteEmployee(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"success": true, "message": "success", "data": employee})
 }
+
+func DetailEmployee(c *gin.Context) {
+	var employee models.Employee
+	id := c.Param("id")
+
+	if err := models.DB.First(&employee, id).Error; err != nil {
+		switch err {
+		case gorm.ErrRecordNotFound:
+			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"message": "Data tidak ditemukan"})
+			return
+		default:
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			return
+		}
+	}
+	c.JSON(http.StatusOK, gin.H{"success": true, "message": "success", "data": employee})
+
+}
