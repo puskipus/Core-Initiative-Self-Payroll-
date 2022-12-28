@@ -1,6 +1,8 @@
 package companycontroller
 
 import (
+	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -35,4 +37,21 @@ func GetDetail(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"success": true, "message": "success", "data": company})
+}
+
+func TopupBalance(c *gin.Context) {
+	var company models.Company
+	lastBalance := models.DB.Select("balance").First(&company)
+	balance, _ := ioutil.ReadAll(c.Request.Body)
+	// newBalance := lastBalance + balance
+	fmt.Println(lastBalance)
+
+	if balance != nil {
+		// c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": balance.Error()})s
+		return
+	}
+
+	if err := models.DB.Model(&company).Update("balance", models.DB.Select("balance").First(&company)); err != nil {
+		// return nil, err
+	}
 }
