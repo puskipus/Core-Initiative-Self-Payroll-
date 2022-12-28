@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	companycontroller "github.com/puskipus/self-payroll/controllers/companyController"
 	"github.com/puskipus/self-payroll/controllers/employeeController"
 	positioncontroller "github.com/puskipus/self-payroll/controllers/positionController"
 	"github.com/puskipus/self-payroll/pkg/models"
@@ -20,6 +21,8 @@ func main() {
 	router.GET("/employee", employeeController.FetchEmployee)
 	router.DELETE("/employee/:id", employeeController.DeleteEmployee)
 	router.GET("/employee/:id", employeeController.DetailEmployee)
+
+	router.POST("/company", companycontroller.CreateCompany)
 
 	router.Run()
 
