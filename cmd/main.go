@@ -5,6 +5,7 @@ import (
 	companycontroller "github.com/puskipus/self-payroll/controllers/companyController"
 	"github.com/puskipus/self-payroll/controllers/employeeController"
 	positioncontroller "github.com/puskipus/self-payroll/controllers/positionController"
+	transactioncontroller "github.com/puskipus/self-payroll/controllers/transactionController"
 	"github.com/puskipus/self-payroll/pkg/models"
 )
 
@@ -24,6 +25,8 @@ func main() {
 
 	router.POST("/company", companycontroller.CreateCompany)
 	router.GET("/company", companycontroller.GetDetail)
+
+	router.GET("/transactions", transactioncontroller.GetTransactions)
 
 	router.Run()
 
