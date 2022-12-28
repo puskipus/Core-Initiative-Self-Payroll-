@@ -23,6 +23,7 @@ func main() {
 	router.GET("/employee/:id", employeeController.DetailEmployee)
 
 	router.POST("/company", companycontroller.CreateCompany)
+	router.GET("/company", companycontroller.GetDetail)
 
 	router.Run()
 
