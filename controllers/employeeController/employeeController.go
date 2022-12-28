@@ -40,3 +40,22 @@ func FetchEmployee(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"employee": employee})
 }
+
+func DeleteEmployee(c *gin.Context) {
+	var employee []models.Employee
+
+	id := c.Param("id")
+
+	if err := models.DB.Delete(&employee, id).Error; err != nil {
+		switch err {
+		case gorm.ErrRecordNotFound:
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Data tidak dapat dihapus"})
+			return
+		default:
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{"success": true, "message": "success", "data": employee})
+}
