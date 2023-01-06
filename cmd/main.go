@@ -24,6 +24,7 @@ func main() {
 	router.GET("/employee/:id", employeeController.DetailEmployee)
 
 	router.POST("/company", companycontroller.CreateCompany)
+	router.POST("/company/topup", companycontroller.TopupBalance)
 	router.GET("/company", companycontroller.GetDetail)
 
 	router.GET("/transactions", transactioncontroller.GetTransactions)
