@@ -46,31 +46,18 @@ func TopupBalance(c *gin.Context) {
 	var b balance
 
 	balance := models.DB.First(&company).Error
+	if balance != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": balance.Error()})
+		return
+	}
+
 	err := c.ShouldBindJSON(&b)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "jumlah balance baru harus diisi"})
 		return
 	}
-	// fmt.Println(b.Value)
 
-	// data := binary.BigEndian.Uint64(byteToInt)
-
-	// newBalance, err := ioutil.ReadAll(c.Request.Body)
-	// if err != nil {
-	// 	return
-	// }
-	// byteToInt, _ := strconv.Atoi(string(newBalance))
 	updateBalance := company.Balance + b.Value
-	// balance, _ := ioutil.ReadAll(c.Request.Body)
-	// newBalance := lastBalance + balance
-	// log.Printf("%+v", company)
-	// log.Printf("%+v", lastBalance)
-	// log.Printf("%+v", byteToInt)
-
-	if balance != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": balance.Error()})
-		return
-	}
 
 	if err := models.DB.Model(&company).Update("balance", updateBalance).Error; err != nil {
 		switch err {
