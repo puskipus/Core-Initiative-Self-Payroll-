@@ -27,7 +27,7 @@ func FetchEmployee(c *gin.Context) {
 	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "1"))
 	skip, _ := strconv.Atoi(c.Query("skip"))
 
-	if err := models.DB.Not("id = ?", skip).Limit(limit).Find(&employee).Model(&employee).Association("Position").Error; err != nil {
+	if err := models.DB.Not("id = ?", skip).Limit(limit).Preload("Position").Find(&employee).Model(&employee).Association("Position").Error; err != nil {
 		switch err {
 		case gorm.ErrRecordNotFound:
 			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"message": "Data tidak ditemukan"})
@@ -64,7 +64,7 @@ func DetailEmployee(c *gin.Context) {
 	var employee models.Employee
 	id := c.Param("id")
 
-	if err := models.DB.First(&employee, id).Error; err != nil {
+	if err := models.DB.Preload("Position").First(&employee, id).Error; err != nil {
 		switch err {
 		case gorm.ErrRecordNotFound:
 			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"message": "Data tidak ditemukan"})
